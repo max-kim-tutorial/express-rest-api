@@ -32,3 +32,10 @@
 - 클라이언트의 요청 정보를 담은 객체
 - http모듈의 리퀘스트 객체를 한번 래핑한 것
 - req.params(), req.query(), req.body()
+
+## TDD(Test Driven Development)
+
+- 소스코드보다 테스트 코드를 먼저 짠다
+- api 서버 개발에 유용
+- 유지보수할때 더 유용해짐
+- mocha,should,supertest
