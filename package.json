@@ -5,12 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "kill": "kill -9 $(lsof -t -i:3000)"
+    "kill": "kill -9 $(lsof -t -i:3000)",
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "mocha": "^8.0.1",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
   }
 }

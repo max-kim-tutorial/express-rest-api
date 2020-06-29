@@ -16,3 +16,5 @@ app.get("/users", function (req, res) {
 app.listen(3000, function () {
   console.log("server running");
 });
+
+module.exports = app;
