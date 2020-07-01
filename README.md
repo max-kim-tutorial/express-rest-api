@@ -58,3 +58,17 @@
 ### res 전달
 
 - res.json()
+- res.status()
+
+### CRUD
+
+#### 메소드
+
+- POST :엔티티 바디 전송(C)
+- GET : 리소스 취득(R)
+- PUT,PATCH : 리소스 일부 수정(U)
+- DELETE : 파일 삭제(D)
+
+#### Delete
+
+- 성공시 204, id 틀리면 400

@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 
 const app = express();
-const users = [
+let users = [
   { id: 1, name: "alice", age: 24 },
   { id: 2, name: "max", age: 21 },
   { id: 3, name: "sandy", age: 29 },
@@ -28,6 +28,15 @@ app.get("/users/:id", function (req, res) {
     return res.status(404).end();
   }
   res.json(user);
+});
+
+app.delete("/users/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (Number.isNaN(id)) {
+    return res.status(400).end();
+  }
+  users = users.filter((user) => user.id !== id);
+  res.status(204).end();
 });
 
 app.listen(3000, function () {
