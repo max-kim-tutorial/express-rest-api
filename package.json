@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node bin/www.js",
     "kill": "kill -9 $(lsof -t -i:3000)",
-    "test": "mocha"
+    "test": "NODE_ENV=test mocha api/user/user.spec.js"
   },
   "author": "",
   "license": "ISC",
