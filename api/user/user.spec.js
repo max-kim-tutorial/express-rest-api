@@ -5,7 +5,7 @@ const should = require("should");
 const models = require("../../models");
 
 // Create
-describe("POST /users는", () => {
+describe.only("POST /users는", () => {
   describe("성공시", () => {
     // 공통로직 분리하기
     let body;
@@ -83,7 +83,7 @@ describe("GET /users는", () => {
   });
 });
 
-describe.only("GET /users/:id는", () => {
+describe("GET /users/:id는", () => {
   describe("성공시", () => {
     it("id가 1인 유저 객체를 반환", (done) => {
       request(app)
