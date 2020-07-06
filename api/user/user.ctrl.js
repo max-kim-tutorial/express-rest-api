@@ -7,8 +7,12 @@ const index = function (req, res) {
   if (Number.isNaN(id)) {
     return res.status(400).end();
   }
-  models.User.findAll({ id: id }).then((users) => {
-    res.json(users);
+
+  models.User.findOne({ where: { id: id } }).then((user) => {
+    if (!user) {
+      return res.status(404).end();
+    }
+    res.json(user);
   });
 };
 

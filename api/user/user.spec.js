@@ -82,7 +82,8 @@ describe("GET /users는", () => {
     });
   });
 });
-describe("GET /users/1는", () => {
+
+describe.only("GET /users/:id는", () => {
   describe("성공시", () => {
     it("id가 1인 유저 객체를 반환", (done) => {
       request(app)
