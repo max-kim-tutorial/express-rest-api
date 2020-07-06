@@ -1,21 +1,15 @@
 // 실제 api의 로직
 
-let users = [
-  { id: 1, name: "alice", age: 24 },
-  { id: 2, name: "max", age: 21 },
-  { id: 3, name: "sandy", age: 29 },
-];
+const models = require("../../models");
 
 const index = function (req, res) {
   const id = parseInt(req.params.id, 10);
   if (Number.isNaN(id)) {
     return res.status(400).end();
   }
-  const user = users.filter((user) => user.id === id)[0];
-  if (!user) {
-    return res.status(404).end();
-  }
-  res.json(user);
+  models.User.findAll({ id: id }).then((users) => {
+    res.json(users);
+  });
 };
 
 const create = function (req, res) {
@@ -35,7 +29,9 @@ const show = function (req, res) {
   if (Number.isNaN(limit)) {
     return res.status(400).end();
   }
-  res.json(users.slice(0, limit));
+  models.User.findAll({ limit: limit }).then((users) => {
+    res.json(users);
+  });
 };
 
 const destroy = function (req, res) {

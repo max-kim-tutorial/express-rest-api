@@ -3,8 +3,8 @@
 ## 이 레포에서 연습
 
 - [x] CRUD 완성
-- [] 구조 잡기
-- [] 관계형 DB 연동 + ORM 사용하기(시퀄라이저)
+- [x] 구조 잡기
+- [x] 관계형 DB 연동 + ORM 사용하기(시퀄라이저)
 - [] passport, 인증 수행하기
 - [] 타입스크립트 끼얹기
 
@@ -92,3 +92,43 @@
 
 - 변경된 name 응답
 - 정수가 아니면 400, name이 없으면 400, 없는 유저 404, 이름이 중복이면 409
+
+## 데이터베이스
+
+- Sqlite 사용할 것
+- SQL : MySql, PostgreSQL
+- NoSQL : MongoDB, DynamoDB
+- In Memory DB : **Redis**, Memcached
+    - 서비스의 성능 향상을 위해 인메모리 디비 사용
+    - 재구동될때 데이터 없어짐
+
+### 쿼리(sql)
+
+```sql
+insert users(`name`)values('alice');
+select * from users;
+update users set name = 'bek' where id = 1;
+delete from users where id = 1;
+```
+
+### ORM
+
+- Object Relational Mapping : 데이터베이스를 객체로 추상화
+- 쿼리를 직접 작성하는 대신 ORM의 메소드로 데이터를 관리할 수 잇음
+- 노드에서 SQL ORM은 시퀄라이저를 주로 사용함
+- ORM의 모델 : 데이터베이스 테이블을 ORM으로 추상화한 것
+    - sequelize.define() : 모델 정의
+    - sequelize.sync() : 데이터베이스 연동
+```js
+// insert users(`name`)values('alice');
+User.create({name:'alice'});
+
+// select * from users;
+User.findAll()
+
+// update users set name = 'bek' where id = 1;
+User.update({name:'bek'}, {where:{id:1}})
+
+// delete from users where id = 1;
+User.destroy({where:{id:1}})
+```

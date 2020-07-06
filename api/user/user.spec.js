@@ -2,6 +2,7 @@
 const app = require("../../app");
 const request = require("supertest");
 const should = require("should");
+const models = require("../../models");
 
 // Create
 describe("POST /users는", () => {
@@ -46,6 +47,12 @@ describe("POST /users는", () => {
 });
 describe("GET /users는", () => {
   describe("성공시", () => {
+    const users = [{ name: "alice" }, { name: "bek" }, { name: "chris" }];
+    before(() => models.sequelize.sync({ force: true }));
+    before(() => {
+      // bulkCreate : 테이블에 넣는 모킹데이터
+      return models.User.bulkCreate(users);
+    });
     it("유저 객체를 담은 배열로 응답한다.", (done) => {
       request(app)
         .get("/users")
