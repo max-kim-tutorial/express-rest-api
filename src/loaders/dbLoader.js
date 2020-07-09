@@ -1,8 +1,9 @@
-const models = require("../models/models");
+const db = require("../models");
 
+// 디비 싱크함수
 module.exports = () => {
   const options = {
     force: process.env.NODE_ENV === "test" ? true : false,
   };
-  return models.sequelize.sync(options);
+  return db.sequelize.sync(options);
 };

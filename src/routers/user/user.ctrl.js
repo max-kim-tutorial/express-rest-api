@@ -1,13 +1,12 @@
 // 실제 api의 로직
 
-const models = require("../../models/models");
+const models = require("../../models");
 
 const index = function (req, res) {
   const id = parseInt(req.params.id, 10);
   if (Number.isNaN(id)) {
     return res.status(400).end();
   }
-
   models.User.findOne({ where: { id: id } }).then((user) => {
     if (!user) {
       return res.status(404).end();
