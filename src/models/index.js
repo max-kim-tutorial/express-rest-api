@@ -2,6 +2,8 @@ const Sequelize = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
+// 복잡한 쿼리 로직이 필요할때는 models 밑에 entity폴더 만들기
+
 // ORM 정의, 깔려있는 데이터베이스로 하려면 환경변수
 const sequelize = new Sequelize({
   dialect: "sqlite",

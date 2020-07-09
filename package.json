@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src",
     "kill": "kill -9 $(lsof -t -i:3000)",
-    "test": "NODE_ENV=test mocha api/user/user.spec.js"
+    "test": "NODE_ENV=test mocha src"
   },
   "author": "",
   "license": "ISC",

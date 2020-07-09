@@ -1,13 +1,15 @@
 // 실제 api의 로직
+const db = require("../../models");
+const UserServicesClass = require("../../services/userServices");
 
-const models = require("../../models");
+const userServices = new UserServicesClass(db.User);
 
 const index = function (req, res) {
   const id = parseInt(req.params.id, 10);
   if (Number.isNaN(id)) {
     return res.status(400).end();
   }
-  models.User.findOne({ where: { id: id } }).then((user) => {
+  userServices.getUserById(id).then((user) => {
     if (!user) {
       return res.status(404).end();
     }
@@ -18,7 +20,8 @@ const index = function (req, res) {
 const create = function (req, res) {
   const name = req.body.name;
   if (!name) return res.status(400).end();
-  models.User.create({ name })
+  userServices
+    .createOneUser(name)
     .then((user) => {
       res.status(201).json(user);
     })
@@ -37,7 +40,7 @@ const show = function (req, res) {
   if (Number.isNaN(limit)) {
     return res.status(400).end();
   }
-  models.User.findAll({ limit: limit }).then((users) => {
+  userServices.getAllUser(limit).then((users) => {
     res.json(users);
   });
 };
@@ -47,9 +50,7 @@ const destroy = function (req, res) {
   if (Number.isNaN(id)) {
     return res.status(400).end();
   }
-  models.User.destroy({
-    where: { id },
-  }).then(() => {
+  userServices.deleteUserById(id).then(() => {
     res.status(204).end();
   });
 };
@@ -61,7 +62,7 @@ const update = function (req, res) {
   const name = req.body.name;
   if (!name) return res.status(400).end();
 
-  models.User.findOne({ where: { id } }).then((user) => {
+  userServices.getUserById(id).then((user) => {
     if (!user) return res.status(404).end();
     user.name = name;
     user
