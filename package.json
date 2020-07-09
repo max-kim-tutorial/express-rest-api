@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node bin/www.js",
+    "start": "node src",
     "kill": "kill -9 $(lsof -t -i:3000)",
     "test": "NODE_ENV=test mocha api/user/user.spec.js"
   },

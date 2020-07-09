@@ -154,7 +154,11 @@ describe("PUT /uesers/:id는", () => {
         .end(done);
     });
     it("이름이 중복일 경우 409를 응답", (done) => {
-      request(app).put("/users/3").send({ name: "max" }).expect(409).end(done);
+      request(app)
+        .put("/users/3")
+        .send({ name: "alice" })
+        .expect(409)
+        .end(done);
     });
   });
 });

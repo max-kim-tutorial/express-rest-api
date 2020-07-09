@@ -5,6 +5,7 @@
 - [x] CRUD 완성
 - [x] 구조 잡기
 - [x] 관계형 DB 연동 + ORM 사용하기(시퀄라이저)
+- [] 리팩토링 + ES6 적용 + (웹팩 번들러 적용)
 - [] passport, 인증 수행하기
 - [] 타입스크립트 끼얹기
 
@@ -99,8 +100,8 @@
 - SQL : MySql, PostgreSQL
 - NoSQL : MongoDB, DynamoDB
 - In Memory DB : **Redis**, Memcached
-    - 서비스의 성능 향상을 위해 인메모리 디비 사용
-    - 재구동될때 데이터 없어짐
+  - 서비스의 성능 향상을 위해 인메모리 디비 사용
+  - 재구동될때 데이터 없어짐
 
 ### 쿼리(sql)
 
@@ -117,18 +118,47 @@ delete from users where id = 1;
 - 쿼리를 직접 작성하는 대신 ORM의 메소드로 데이터를 관리할 수 잇음
 - 노드에서 SQL ORM은 시퀄라이저를 주로 사용함
 - ORM의 모델 : 데이터베이스 테이블을 ORM으로 추상화한 것
-    - sequelize.define() : 모델 정의
-    - sequelize.sync() : 데이터베이스 연동
+  - sequelize.define() : 모델 정의
+  - sequelize.sync() : 데이터베이스 연동
+
 ```js
 // insert users(`name`)values('alice');
-User.create({name:'alice'});
+User.create({ name: "alice" });
 
 // select * from users;
-User.findAll()
+User.findAll();
 
 // update users set name = 'bek' where id = 1;
-User.update({name:'bek'}, {where:{id:1}})
+User.update({ name: "bek" }, { where: { id: 1 } });
 
 // delete from users where id = 1;
-User.destroy({where:{id:1}})
+User.destroy({ where: { id: 1 } });
 ```
+
+## 구조에 대한 레퍼런스
+
+[여기](https://dev.to/santypk4/bulletproof-node-js-project-architecture-4epf), [여기](http://jeonghwan-kim.github.io/express-js-1-%EC%84%A4%EC%B9%98%EC%99%80-%EA%B5%AC%EC%A1%B0/) 참조
+
+### 원칙
+
+1. 3 Layer architecture : 3개로 관심사를 분리. controller, service layer, data access layer
+
+   - controller : 라우트 컨트롤러
+   - service : DB에 접근하는 로직, 동작 정의, 정의된 동작으로만 DB에 접근한다. **컨트롤러에 쿼리를 작성하지 않는다 + 컨트롤러에서 모델에 직접 접근하지 않는다**
+   - data access layer : 모델, 모델 스키마 정의
+
+2. 컨트롤러에 비즈니스 로직을 넣지 마라 : 스파게티 코드 각임. 유닛 테스트 모킹할때도 복잡
+
+3. pub/sub 구조 : 구독자 패턴, publisher와 subscriber의 분리. 서비스 로직 하나에서 모두 처리하려고 하지 말고, 이벤트를 알려주는 패턴을 사용해서 로직을 분리해라
+
+4. 의존성 주입 : 파라미터같은거 명시해서 가독성 올리고, 클래스나 함수에서 다루는 값들을 쉽게 파악할 수 있도록 한다. 클래스 같은 경우 인자로 받는 얘들을 멤버변수화해서 처리
+
+5. 클래스 활용 : 임포트 할때 유용하기도 하고, 다형성을 쉽게 구현할 수 있게끔 함. 타입스크립트의 클래스 기능이 더 좋으므로 그걸 한번 공부해봐야 할듯.
+
+### 구조 폴더
+
+- loader : 앱을 시작하기 위한 함수 or 클래스. 진입점에서 실행시킨다. app.js에 앱을 시작하는 코드들을 모두 때려박으면 넘 길고 구구절절해지므로 모듈화를 한다. 데이터베이스를 연결하는 로직, 라우터를 연결하는 로직, 서버를 실제로 시작하는 로직 등등을 모듈화해서 깔끔하게 정리할 수 있음
+- config : 환경변수를 모아둔다(dotenv.config())
+- models : 데이터베이스 관련한 로직. 데이터베이스 스키마를 작성하는 로직과, ORM등을 설정하는 로직을 분리하면 좋을 것 같다
+- services : 데이터베이스에 접근하는 로직들을 작성한다. 쿼리를 짜주는 곳이라고 생각하면 될듯.
+- controllers/API/routers : 라우팅하는 URL에 맞춰 관련한 로직들을 한꺼번에 폴더에 정리한다. 폴더의 index에서는 라우터와 컨트롤러 함수를 매칭하고, ctrl 파일에서 라우트 함수의 구체적인 로직을 짠다. 테스트 파일도 같이 넣어준다(따로 test 폴더를 운용하는 것보다 이렇게 하는게 더 나을듯). middleware 폴더를 따로 만들어줘도 좋다. 최상위의 index에는 모든 라우터 로직들을 패키지로 묶어줌
