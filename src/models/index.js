@@ -1,14 +1,20 @@
 const Sequelize = require("sequelize");
 const fs = require("fs");
-const path = require("path");
+const dotenv = require("dotenv");
 
+dotenv.config(); //LOAD CONFIG
 // 복잡한 쿼리 로직이 필요할때는 models 밑에 entity폴더 만들기
 
 // ORM 정의, 깔려있는 데이터베이스로 하려면 환경변수
-const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: "./db.sqlite",
-});
+const sequelize = new Sequelize(
+  process.env.DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: "localhost",
+    dialect: "postgres",
+  }
+);
 
 // db 객체에 각 모델.js에서 선언한 모델 객체들 + seqaulize 객체(sync 할때 필요함)
 let db = {};
